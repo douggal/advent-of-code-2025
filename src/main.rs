@@ -25,6 +25,7 @@ fn main() {
     let args = Args::parse();
 
     match args.day {
+        0 => days::day00::run(),  // Day 0:  Rust train up
         1 => days::day01::run(),
         2 => days::day02::run(),
         3 => days::day03::run(),

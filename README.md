@@ -5,7 +5,7 @@ This project is a scaffold with day's puzzle in its own module.
 
 Advent of Code website:  [Advent of Code](https://adventofcode.com)
 
-Solutions are in Rust lang v1.90+ (2021 Edition) unless otherwise noted.
+Solutions are in Rust lang v1.90+ (2024 Edition) unless otherwise noted.
 
 [Rust language cheat sheet](https://cheats.rs/)
 
