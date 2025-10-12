@@ -1,3 +1,4 @@
+use chrono::Utc;
 /// Advent of Code 2025
 /// December 2025
 /// https://adventofcode.com/2025
@@ -12,8 +13,15 @@ struct Args {
 }
 
 fn main() {
-    println!("--- Advent of Code 2025 ---");
+    println!("Advent of Code 2025");
+    // Start
+    let start_datetime = Utc::now();
+    println!(
+        "Start date and time (UTC): {}",
+        start_datetime.format("%Y-%m-%d %H:%M:%S")
+    );
 
+    // Read day number from command line.
     let args = Args::parse();
 
     match args.day {
@@ -44,4 +52,11 @@ fn main() {
         25 => days::day25::run(),
         _ => eprintln!("Day must be between 1 and 25."),
     }
+
+    // End
+    println!();
+    println!(
+        "End date and time (UTC): {}",
+        Utc::now().format("%Y-%m-%d %H:%M:%S")
+    );
 }
