@@ -41,12 +41,13 @@ This project is licensed under the MIT License.
 ## Notes on Rust
 - Informal way to compute elapsed time link: [Stackoveflow](https://stackoverflow.com/questions/13322479/how-to-benchmark-programs-in-rust)
 - Nifty way to replace chars in a string this using match expression. Link: [stackoverflow.com](https://stackoverflow.com/questions/34606043/how-do-i-replace-specific-characters-idiomatically-in-rust)
+
 ```rust
-   let s:String = input.chars()
-   .map(|x| match x {
-   '\n' => ' ',
-   _ => x
-   }).collect();
+let s:String = input.chars()
+.map(|x| match x {
+'\n' => ' ',
+_ => x
+}).collect();
 ```
 - How to find overlapping matches.  Look ahead:  https://stackoverflow.com/questions/11430863/how-to-find-overlapping-matches-with-a-regexp
 

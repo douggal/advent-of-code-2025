@@ -1,5 +1,7 @@
 use std::time::Instant;
 // use regex::Regex;
+use aoc25;
+use aoc25::add_number;
 
 #[allow(unused_variables)]
 pub fn run() {
@@ -18,7 +20,7 @@ pub fn run() {
     let now = Instant::now();
 
     // Part 1
-    let answer_p1 = 0;
+    let answer_p1 = add_number(1);
     println!("Part 1.  answer...  {answer_p1}");
     println!("Elapsed time part 1: {:.2?}", now.elapsed());
     println!();
