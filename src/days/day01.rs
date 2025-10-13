@@ -1,17 +1,29 @@
 use std::time::Instant;
 // use regex::Regex;
 
-#[allow(unused_variables)]
+/// Advent of Code 2025 Day 1
+/// 1 December 2025
+/// Solution
+
 pub fn run() {
     println!("Day 1");
 
-    let input = std::fs::read_to_string("inputs/day01.txt")
-        .expect("Failed to read input file for Day 1");
+    // Read file contents into a string
+    let input = std::fs::read_to_string("inputs/day01-test.txt")
+        .expect("Failed to read input file for Day XX");
 
-    // Check input was correctly read in.  Look for complete first and last lines!
+    // Cast the input as a Vector<String> or as best suites each puzzle
+    let input_vec = Vec::from(
+        input
+            .lines()
+            .map(|line| line.trim())
+            .filter(|line| !line.is_empty())
+            .collect::<Vec<&str>>()
+    );
+
+    // Debug:  Visually validate the input: Check for missing first and/or last row, etc!
     // dbg!(&input);
-    println!("Input data: {}", input.trim());
-    println!();
+    println!("{}", input_vec.join("\n"));
 
 
     // Track program runtime by "clock on the wall"

@@ -6,12 +6,25 @@ use std::time::Instant;
 pub fn run() {
     println!("Day XX");
 
+    // Read file contents into a string
+    // let filename = "inputs/day01-test.txt";
     let input = std::fs::read_to_string("inputs/day01.txt")
         .expect("Failed to read input file for Day XX");
 
-    // Check input was correctly read in.  Look for first and last values!
+    // Cast the input as a Vector<String> with leading and trailing
+    // whitespace trimmed, or as best suites each puzzle
+    let input_vec = Vec::from(
+        input
+            .lines()
+            .map(|line| line.trim())
+            .filter(|line| !line.is_empty())
+            .collect::<Vec<&str>>()
+    );
+
+    // Debug:  Visually validate the input: Check for missing first and/or last row, etc!
     // dbg!(&input);
-    println!("Input data: {}", input.trim());
+    println!("Input as Vector:\n{}", input_vec.join("\n"));
+
 
     // regex to match a single digit 0 to 9
     // let re_digit = Regex::new(r"[0-9]").unwrap();
