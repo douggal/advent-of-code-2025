@@ -6,8 +6,7 @@ use std::time::Instant;
 pub fn run() {
     println!("Day XX");
 
-    // Read file contents into a string
-    // let filename = "inputs/day01-test.txt";
+    // Read the puzzle data file contents into a string
     let input = std::fs::read_to_string("inputs/day01.txt")
         .expect("Failed to read input file for Day XX");
 
@@ -21,34 +20,27 @@ pub fn run() {
             .collect::<Vec<&str>>()
     );
 
-    // Debug:  Visually validate the input: Check for missing first and/or last row, etc!
+    // Debug:  Visually validate the puzzle input: Check for missing first and/or last row, etc!
     // dbg!(&input);
-    println!("Input as Vector:\n{}", input_vec.join("\n"));
+    println!("Input data as Vector:\n{}", input_vec.join("\n"));
 
-
-    // regex to match a single digit 0 to 9
-    // let re_digit = Regex::new(r"[0-9]").unwrap();
-    //
-    // #[derive(Debug)]
-    // struct MyStruct {
-    //     name: String,
-    //     value: i32,
-    // }
-
-    // Track program runtime by "clock on the wall"
-    let now = Instant::now();
+    // Track program runtime by elapsed time as shown by a "clock on the wall"
+    let stop_watch = Instant::now();
 
     // Part 1
     let answer_p1 = 0;
     println!("Part 1.  answer...  {answer_p1}");
-    println!("Elapsed time part 1: {:.2?}", now.elapsed());
+    let lap1 = stop_watch.elapsed();
+    println!("Elapsed time part 1: {:.2?}", lap1);
     println!();
 
 
     // Part 2
     let answer_p2 = 0;
     println!("Part 2. answer ... {answer_p2}");
-    println!("Elapsed time part 2: {:.2?}", now.elapsed());
+    println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed()-lap1);
+
+    println!("\nTotal elapsed runtime: {:.2?}", stop_watch.elapsed());
 
 }
 

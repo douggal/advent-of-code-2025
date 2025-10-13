@@ -8,11 +8,12 @@ use std::time::Instant;
 pub fn run() {
     println!("Day 1");
 
-    // Read file contents into a string
+    // Read the puzzle data file contents into a string
     let input = std::fs::read_to_string("inputs/day01-test.txt")
         .expect("Failed to read input file for Day XX");
 
-    // Cast the input as a Vector<String> or as best suites each puzzle
+    // Cast the input as a Vector<String> with leading and trailing
+    // whitespace trimmed, or as best suites each puzzle
     let input_vec = Vec::from(
         input
             .lines()
@@ -21,25 +22,27 @@ pub fn run() {
             .collect::<Vec<&str>>()
     );
 
-    // Debug:  Visually validate the input: Check for missing first and/or last row, etc!
+    // Debug:  Visually validate the puzzle input: Check for missing first and/or last row, etc!
     // dbg!(&input);
     println!("{}", input_vec.join("\n"));
 
 
-    // Track program runtime by "clock on the wall"
-    let now = Instant::now();
+    // Track program runtime by elapsed time shown by a "clock on the wall"
+    let stop_watch = Instant::now();
 
     // Part 1
     let answer_p1 = 0;
     println!("Part 1.  answer...  {answer_p1}");
-    println!("Elapsed time part 1: {:.2?}", now.elapsed());
+    let lap1 = stop_watch.elapsed();
+    println!("Elapsed time part 1: {:.2?}", lap1);
     println!();
 
 
     // Part 2
     let answer_p2 = 0;
     println!("Part 2. answer ... {answer_p2}");
-    println!("Elapsed time part 2: {:.2?}", now.elapsed());
+    println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed()-lap1);
 
+    println!("\nTotal elapsed runtime: {:.2?}", stop_watch.elapsed());
 }
 

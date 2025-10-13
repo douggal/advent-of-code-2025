@@ -32,7 +32,7 @@ pub fn run() {
 
 
     // Track program runtime by "clock on the wall"
-    let now = Instant::now();
+    let stop_watch = Instant::now();
 
 
     let my_tuple = ('A',1,2);
@@ -140,13 +140,20 @@ pub fn run() {
 
     let z = 0;
 
-    let answer_p1 = add_number(1);
+    // Part 1
+    let answer_p1 = 0;
     println!("Part 1.  answer...  {answer_p1}");
-    println!("Elapsed time part 1: {:.2?}", now.elapsed());
+    let lap1 = stop_watch.elapsed();
+    println!("Elapsed time part 1: {:.2?}", lap1);
     println!();
 
-    let my_bool = true;
-    assert_eq!(my_bool, true);
+
+    // Part 2
+    let answer_p2 = 0;
+    println!("Part 2. answer ... {answer_p2}");
+    println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed()-lap1);
+
+    println!("\nTotal elapsed runtime: {:.2?}", stop_watch.elapsed());
 
 
 }
