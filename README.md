@@ -67,11 +67,9 @@ shared utilities, and each day's solution.
 │  └─ ...
 ├─ days/                      # alternative layout: per-day crates (workspace)
 │  ├─ day01/
-│  │  ├─ Cargo.toml
 │  │  └─ src/
 │  │     └─ main.rs
 │  └─ ...
-├─ examples/                  # quick examples or helper scripts (optional)
 └─ target/                    # build output (ignored by git)
 ```
 
@@ -97,5 +95,7 @@ This project is licensed under the MIT License.
 
 Acknowledgements
 ----------------
-- Advent of Code (https://adventofcode.com)
-- Rust language and community resources
+- * Advent of Code (https://adventofcode.com)
+- * Rust language and community resources
+- * [Amit Patel’s Thoughts on Grids](https://www.redblobgames.com/)
+
