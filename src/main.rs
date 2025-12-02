@@ -1,4 +1,6 @@
-use chrono::Utc;
+use chrono::{DateTime, Utc};
+use chrono_tz::US::Eastern;
+
 /// Advent of Code 2025
 /// December 2025
 /// https://adventofcode.com/2025
@@ -16,10 +18,7 @@ fn main() {
     println!("Advent of Code 2025");
     // Start
     let start_datetime = Utc::now();
-    println!(
-        "Start date and time (UTC): {}",
-        start_datetime.format("%Y-%m-%d %H:%M:%S")
-    );
+    println!("Start date and time  (Eastern US): {}", start_datetime.with_timezone(&Eastern));
 
     // Read day number from command line.
     let args = Args::parse();
@@ -41,9 +40,6 @@ fn main() {
     }
 
     // End
-    println!();
-    println!(
-        "End date and time (UTC): {}",
-        Utc::now().format("%Y-%m-%d %H:%M:%S")
-    );
+    let utc_time: DateTime<Utc> = Utc::now();
+    println!("\nEnd date and time (Eastern US): {}", utc_time.with_timezone(&Eastern));
 }

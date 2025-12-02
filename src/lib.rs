@@ -35,9 +35,3 @@ pub fn read_puzzle_input(path: &str) -> String {
     };
     input.trim().to_string()
 }
-
-const MY_IMPORTANT_NUMBER: i32 = 42;
-
-pub fn add_number(input: i32) -> i32 {
-    input + MY_IMPORTANT_NUMBER
-}
