@@ -116,7 +116,7 @@ pub fn run() {
             _ => eprintln!("Error on line {}", row),
         }
     }
-    // dbg!(&result_vec);
+    dbg!(&result_vec.len());
     let answer_p2 = result_vec.iter().filter(|&&v| v == 0).count();
     println!("Part 2 answer {}", answer_p2);
     println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed()-lap1);
