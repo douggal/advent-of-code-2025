@@ -34,9 +34,14 @@ pub fn run() {
     // Debug:  Visually validate the puzzle input: Check for missing first and/or last row, etc!
     // dbg!(&input);
     // Debug:  Visually validate the puzzle input: Check for missing first and/or last row, etc!
-    println!("Raw input: {:?}", input);
-    println!("Input as Vec<String>:\n{}", input_vec.join("\n"));
-    println!("End input inspection\n");
+    #[cfg(debug_assertions)]
+    {
+        println!("Input file: {}", filename);
+        println!("Lines of data in input: {}", input_vec.len());
+        //println!("Raw input: {:?}", input);
+        println!("Input as Vec<String>:\n{}", input_vec.join("\n"));
+        println!("End input inspection\n");
+    }
 
     // Track program runtime by elapsed time as shown by a "clock on the wall"
     let stop_watch = Instant::now();
@@ -45,10 +50,9 @@ pub fn run() {
     // Part 1
     //////////
     let answer_p1 = 0;
-    println!("Part 1.  answer...  {answer_p1}");
+    println!("Part 1 answer {}", answer_p1);
     let lap1 = stop_watch.elapsed();
-    println!("Elapsed time part 1: {:.2?}", lap1);
-    println!();
+    println!("Elapsed time part 1: {:.2?}\n", lap1);
 
     //////////
     // Part 2
