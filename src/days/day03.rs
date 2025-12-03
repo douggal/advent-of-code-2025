@@ -1,6 +1,4 @@
-use std::ops::Index;
 use std::time::Instant;
-// use regex::Regex;
 
 ////////////////////////////////////////////////////////////////
 // Advent of Code 2025 Day 3
@@ -14,8 +12,8 @@ pub fn run() {
     println!("AoC 2025 Day 3");
 
     // Read the puzzle data file contents into a string
-    let filename = "./inputs/day03-test.txt";
-    // let filename = "./inputs/day03.txt";
+    // let filename = "./inputs/day03-test.txt";
+    let filename = "./inputs/day03.txt";
 
     // Read the puzzle data file contents into a string
     let input = std::fs::read_to_string(filename).expect("Failed to read input file for Day 3");
@@ -52,30 +50,35 @@ pub fn run() {
     for (row, line) in input_vec.iter().enumerate() {
         // find two biggest digits in each row,
         // combine them and turn into a integer:  that's the highest voltage
-        let mut digits = line
+        let digits = line
             .chars()
             .map(|c| c.to_digit(10).unwrap() as u64)
             .collect::<Vec<u64>>();
-        let big = *digits.iter().max().unwrap();
-        let index_of_bg = digits.iter().position(|&x| x == big).unwrap();
-        digits.remove(index_of_bg);
-        let next_big = *digits.iter().max().unwrap();
-        let index_of_next_bg = digits.iter().position(|&x| x == next_big).unwrap();
 
-        if index_of_bg >= index_of_next_bg {
-            joltages.push(big * 10 + next_big);
-        }
-        else {
-            joltages.push(next_big * 10 + big);
-        }
+        let mut big = digits[0];
+        let mut next_big = digits[1];
 
-}
+        for i in 0..digits.len()-1 {
+            if big < digits[i] {
+                big = digits[i];
+                next_big = digits[i+1];
+            }
+            for j in i +1..digits.len() {
+                // println!("D: {}, E: {}, Big {}, Next Big {}", digits[i], digits[j], big, next_big);
+                if next_big < digits[j]  {
+                    next_big = digits[j];
+                }
+            }
+        }
+        let j = big*10 + next_big;
+            joltages.push(big*10+next_big);
+
 
 
     }
-    println!("{:?}", joltages);
+    // println!("{:?}", joltages);
 
-    let answer_p1 = 0;
+    let answer_p1 = joltages.iter().sum::<u64>();
     println!("Part 1 answer {}", answer_p1);
     let lap1 = stop_watch.elapsed();
     println!("Elapsed time part 1: {:.2?}\n", lap1);
