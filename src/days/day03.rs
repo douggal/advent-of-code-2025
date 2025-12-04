@@ -12,8 +12,8 @@ pub fn run() {
     println!("AoC 2025 Day 3");
 
     // Read the puzzle data file contents into a string
-    // let filename = "./inputs/day03-test.txt";
-    let filename = "./inputs/day03.txt";
+    let filename = "./inputs/day03-test.txt";
+    // let filename = "./inputs/day03.txt";
 
     // Read the puzzle data file contents into a string
     let input = std::fs::read_to_string(filename).expect("Failed to read input file for Day 3");
