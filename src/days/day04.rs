@@ -1,5 +1,9 @@
 use std::time::Instant;
-// use regex::Regex;
+use image::{ImageBuffer, Rgb};
+use ab_glyph::{FontArc, PxScale, Glyph, point, Font};
+
+
+
 
 ////////////////////////////////////////////////////////////////
 // Advent of Code 2025 Day 4
@@ -113,7 +117,12 @@ pub fn run() {
     for (row, line) in input_vec.into_iter().enumerate() {
         // println!("Index or row in grid {}: Line {}", row, line); // Row number
         for (col, ch) in line.chars().into_iter().enumerate() {
-            grid[row][col].s = ch.to_string();
+            if ch == '.' {
+                grid[row][col].s = '.'.to_string();
+            }
+            else {
+                grid[row][col].s = ch.to_string();
+            }
         }
     }
 
@@ -212,6 +221,59 @@ pub fn run() {
     let answer_p2 = count_can_be_moved;
     println!("Part 2 answer ... {answer_p2}");
     println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed() - lap1);
+
+    // Create an image of the final state after Part 2 run.
+
+    let img_size = 700;
+    let rows = grid.len();
+    let cols = grid[0].len();
+    let cell_width = img_size / cols;
+    let cell_height = img_size / rows;
+
+    // Create blank image (white background)
+    let mut img = ImageBuffer::from_pixel(img_size as u32, img_size as u32, Rgb([255, 255, 255]));
+
+    // Load font (place a .ttf file in your project directory)
+    let font_data = include_bytes!("FiraCodeNerdFontMono-Bold.ttf");
+    let font = FontArc::try_from_slice(font_data).unwrap();
+
+    let scale = PxScale::from(cell_height as f32 * 0.8);
+
+    for (row_idx, row) in grid.iter().enumerate() {
+        for (col_idx, ch) in row.iter().enumerate() {
+            let x = (col_idx * cell_width) as f32;
+            let y = ((row_idx + 1) * cell_height) as f32;
+
+            // Correct: use `point(x, y)` for position
+            let glyph_id = font.glyph_id(grid[row_idx][col_idx].s.chars().next().unwrap());
+            let glyph = Glyph {
+                id: glyph_id,
+                scale,
+                position: point(x, y),
+            };
+
+            // Rasterize glyph
+            if let Some(outlined) = font.outline_glyph(glyph) {
+                outlined.draw(|gx, gy, coverage| {
+                    let px = gx as f32 + outlined.px_bounds().min.x;
+                    let py = gy as f32 + outlined.px_bounds().min.y;
+                    let px_i = px.round() as i32;
+                    let py_i = py.round() as i32;
+
+                    if px_i >= 0 && py_i >= 0 && px_i < img_size as i32 && py_i < img_size as i32 {
+                        let pixel = img.get_pixel_mut(px_i as u32, py_i as u32);
+                        let val = (coverage * 255.0) as u8;
+                        *pixel = Rgb([0u8, 0u8, 0u8]) // Black text
+                    }
+                });
+            }
+        }
+    }
+
+    img.save("./output_images/day04p2.png").unwrap();
+
+
+
 
     println!("\nTotal elapsed runtime: {:.2?}", stop_watch.elapsed());
 }
