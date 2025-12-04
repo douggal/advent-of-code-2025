@@ -33,7 +33,6 @@ pub fn run() {
 
     // Debug:  Visually validate the puzzle input: Check for missing first and/or last row, etc!
     // dbg!(&input);
-    // Debug:  Visually validate the puzzle input: Check for missing first and/or last row, etc!
     #[cfg(debug_assertions)]
     {
         println!("Input file: {}", filename);

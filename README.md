@@ -88,7 +88,12 @@ _ => x
 
 ## Daily Notes & Reflections
 
-### [Day 1...](https://adventofcode.com/2025/day/1)
+### [Day 3](https://adventofcode.com/2025/day/3)
+
+Day 3 Part 1 was harder than I had thought at first.  Part 2 DNF on same day.
+
+
+### ...
 
 ## License
 This project is licensed under the MIT License.
