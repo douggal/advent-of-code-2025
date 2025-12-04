@@ -1,7 +1,7 @@
 # Advent of Code 2025
 
 This repository contains my personal solutions to the [Advent of Code 2025](https://adventofcode.com) programming 
-challenges, implemented in Rust.  Solutions are in Rust lang v1.90+ (2024 Edition) unless otherwise noted.
+challenges, implemented in Rust with Cargo.  Solutions are in Rust lang v1.91+ (2024 Edition) unless otherwise noted.
 
 Each day's puzzle solution is organized into its own module.
 
