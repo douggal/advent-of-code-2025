@@ -122,17 +122,15 @@ pub fn run() {
     //     println!("{}", row.iter().map(|floor_position| floor_position.to_string()).collect::<Vec<String>>().join(" "));
     // }
 
+    // Start from (0,0), upper left
+    let start_coord = GridCoordinate{q:0,r:0};
+    let test_coords = vec![(-1,-1),(-1,0),(-1,1),
+                           (0,-1),         (0,1),
+                           (1,-1), (1,0), (1,1)];
 
     //////////
     // Part 1
     //////////
-
-    // Start from (0,0), upper left
-    let start_coord = GridCoordinate{q:0,r:0};
-    let test_coords = vec![(-1,-1),(-1,0),(-1,1),
-                                     (0,-1),         (0,1),
-                                     (1,-1), (1,0), (1,1)];
-
 
     let mut can_be_moved:Vec<i32> = vec![];
     for row in &grid {
@@ -170,8 +168,49 @@ pub fn run() {
     //////////
     // Part 2
     //////////
-    let answer_p2 = 0;
-    println!("Part 2. answer ... {answer_p2}");
+
+    let mut count_can_be_moved = 0;
+    loop {
+        let mut moved_this_run = 0;
+        let mut can_be_moved2: Vec<GridCoordinate> = vec![];
+        for row in &grid {
+            for pallet_pos in row {
+                // println!("{}", pallet_position.to_string());
+                let mut cnt = 0;
+                if pallet_pos.s.as_str() == "@" {
+                    for coord in test_coords.iter() {
+                        let q = pallet_pos.coord.q + coord.0;
+                        let r = pallet_pos.coord.r + coord.1;
+                        if q >= 0 && q < rows as i32 && r >= 0 && r < cols as i32 {
+                            let contents = grid[q as usize][r as usize].s.to_string();
+                            if contents == "@" {
+                                cnt += 1;
+                            }
+                        }
+                    }
+                    if cnt < 4 {
+                        can_be_moved2.push(GridCoordinate { q: pallet_pos.coord.q, r: pallet_pos.coord.r });
+                        count_can_be_moved += 1;
+                        moved_this_run+=1;
+                    }
+                }
+                // println!("{:?}, Cnt: {}", grid[pallet_pos.coord.q as usize][pallet_pos.coord.r as usize], cnt);
+            }
+        }
+
+        // remove paper rolls
+        for roll in &can_be_moved2 {
+            grid[roll.q as usize][roll.r as usize].s = ".".to_string();
+        }
+
+        if moved_this_run == 0{
+            break; // Exit when no more paper rolls can be moved
+        }
+    }
+
+
+    let answer_p2 = count_can_be_moved;
+    println!("Part 2 answer ... {answer_p2}");
     println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed() - lap1);
 
     println!("\nTotal elapsed runtime: {:.2?}", stop_watch.elapsed());
