@@ -1,0 +1,8 @@
+# Treat image files as binary to avoid diffing
+*.jpg binary
+*.jpeg binary
+*.png binary
+
+# Treat Excel files as binary
+*.xls binary
+*.xlsx binary
