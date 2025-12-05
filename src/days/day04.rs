@@ -85,8 +85,6 @@ pub fn run() {
         println!("End input inspection\n");
     }
 
-    // Track program runtime by elapsed time as shown by a "clock on the wall"
-    let stop_watch = Instant::now();
 
     // let grid: Vec<Vec<Tile>>
     // (q,r) == (y, x) == (row, column), reverse of typical Cartesian coord point
@@ -130,6 +128,9 @@ pub fn run() {
     // for row in &grid {
     //     println!("{}", row.iter().map(|floor_position| floor_position.to_string()).collect::<Vec<String>>().join(" "));
     // }
+
+    // Track program runtime by elapsed time as shown by a "clock on the wall"
+    let stop_watch = Instant::now();
 
     // Start from (0,0), upper left
     let start_coord = GridCoordinate{q:0,r:0};
@@ -263,7 +264,7 @@ pub fn run() {
                     if px_i >= 0 && py_i >= 0 && px_i < img_size as i32 && py_i < img_size as i32 {
                         let pixel = img.get_pixel_mut(px_i as u32, py_i as u32);
                         let val = (coverage * 255.0) as u8;
-                        *pixel = Rgb([0u8, 0u8, 0u8]) // Black text
+                        *pixel = Rgb([0u8, 255u8, 0u8]) // Black text
                     }
                 });
             }

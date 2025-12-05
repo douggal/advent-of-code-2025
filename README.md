@@ -92,6 +92,10 @@ _ => x
 
 Day 3 Part 1 was harder than I had thought at first.  Part 2 DNF on same day.
 
+### [Day 4](https://adventofcode.com/2025/day/4)
+Warehouse floor at end of Part 2:
+![day04p2.png](output_images/day04p2.png)
+
 
 ### ...
 
