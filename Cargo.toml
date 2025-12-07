@@ -12,5 +12,22 @@ chrono-tz = "0.10.4"
 image = "0.24"
 ab_glyph = "0.2"
 
+# Development Profile (Debugging)
+[profile.dev]
+opt-level = 0          # No optimization for fastest compile times
+debug = true           # Full debug info for better debugging
+incremental = true     # Faster rebuilds
+codegen-units = 16     # Parallel compilation for speed ?? AI suggestion, docs say default is 256
 
+# Optional: Debug with some optimizations (for reproducing release-only bugs)
+# Uncomment if needed:
+# opt-level = 1
+# codegen-units = 1
 
+# Release Profile (Production)
+[profile.release]
+opt-level = 3          # Maximum optimization for performance
+debug = false          # Strip debug info for smaller binaries
+lto = "fat"            # Full Link-Time Optimization for best performance
+codegen-units = 1      # Single unit for global optimizations
+panic = "abort"        # Optional: reduces binary size

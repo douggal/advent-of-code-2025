@@ -10,13 +10,14 @@
             "request": "launch",
             "cargo": {
                 "args": [
-                    "run",
+                    "build",
                     "--bin=aoc25"
                 ]
             },
-            "args": ["0"],
-            "cwd": "${workspaceFolder}"
-
+            "args": ["6"],
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "sourceLanguages": ["rust"]
         },
     
         {
@@ -28,18 +29,6 @@
                     "test"
                 ]
             }
-        },
-        {
-            "name": "Debug executable 'aoc25'",
-            "type": "lldb",
-            "request": "launch",
-            "cargo": {
-                "args": [
-                    "run",
-                    "--bin=aoc25"
-                ]
-            },
-            "args": []
         },
         {
             "name": "Debug unit tests in executable 'aoc25'",
