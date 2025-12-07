@@ -46,7 +46,7 @@ pub fn run() {
     // Part 1
     //////////
 
-    let num_operands = input_vec.len()-1;
+    let num_operands = input_vec.len() - 1;
 
     let mut numbers: Vec<Vec<u64>> = Vec::new();
     for (row, line) in input_vec.iter().enumerate() {
@@ -66,10 +66,10 @@ pub fn run() {
         .split_whitespace()
         .collect::<Vec<&str>>();
 
-    let mut answers:Vec<u64> = Vec::new();
+    let mut answers: Vec<u64> = Vec::new();
 
     for (idx, op) in operations.iter().enumerate() {
-        let mut operands:Vec<u64> = vec![];
+        let mut operands: Vec<u64> = vec![];
         for i in 0..numbers.len() {
             operands.push(numbers[i][idx]);
         }
@@ -85,7 +85,7 @@ pub fn run() {
         }
     }
 
-    let mut sum:u64 = 0;
+    let mut sum: u64 = 0;
     for answer in answers {
         if let Some(total) = sum.checked_add(answer) {
             sum = total;
@@ -104,64 +104,88 @@ pub fn run() {
     let mut x: Vec<Vec<char>> = Vec::new();
     for (row, line) in input_vec.iter().enumerate() {
         if !(line.contains("+") && line.contains("*")) {
-            let digits : Vec<char> = line.chars().collect();
+            let digits: Vec<char> = line.chars().collect();
             println!("{:?}", digits);
             x.push(digits);
         }
     }
 
-    let mut numbers_pt2: Vec<Vec<u64>> = vec![vec![0; 3]];
-    let mut idx = 0;
-    let mut op_num = 0;
-    loop {
+    let mut numbers_pt2: Vec<Vec<u64>> = Vec::new();
+    let mut new_nbrs: Vec<u64> = Vec::new();
+    for i in 0..x[1].len() {
+
+
+        // canonicalize each line, that is, push digits to the left and blanks to the right
+        // let mut canonical = x[i].into_iter().map(|x|  x.to_string()).collect::<Vec<String>>();
+        // let num_spaces = canonical.into_iter().rev().take_while(|x| x !=" ").count();  //collect::<Vec<char>>().len();
+        // remove spaces and canonicalize by pushing digits to the far side (right and higher index value)
+        let mut ds:Vec<String> = vec![];
+
+        ds.push(" ".to_string()); // x[0].pop().unwrap().to_string();
+        ds.push(x[0].pop().unwrap().to_string());
+        ds.push(x[1].pop().unwrap().to_string());
+        ds.push(x[2].pop().unwrap().to_string());
+
+        let mut canonical: Vec<String> = Vec::new();
+
+        for d in 0..ds.iter().len() {
+            if ds[d] != " " {
+                canonical.push(ds[d].clone());
+            }
+        }
+
+        if canonical.iter().len() < num_operands {
+            let padding = num_operands - canonical.len();
+            for i in 0..=padding {
+                canonical.push(" ".to_string());
+            }
+        }
+
+        dbg!(&canonical);
+
         // let thousands = x[0].pop().unwrap().to_string();
         // let hundreds = x[1].pop().unwrap().to_string();
         // let tens = x[2].pop().unwrap().to_string();
         // let ones = x[3].pop().unwrap().to_string();
 
-        let thousands = " ".to_string(); // x[0].pop().unwrap().to_string();
-        let hundreds = x[0].pop().unwrap().to_string();
-        let tens = x[1].pop().unwrap().to_string();
-        let ones = x[2].pop().unwrap().to_string();
+        let thousands = &"0".to_string(); // &canonical[3];
+        let hundreds = &canonical[0];
+        let tens = &canonical[1];
+        let ones = &canonical[2];
 
-        let mut t:u64 = 0;
-        let mut h:u64 = 0;
-        let mut d:u64 = 0;
-        let mut o:u64 = 0;
-        if &thousands != " " {
+        let mut t: u64 = 0;
+        let mut h: u64 = 0;
+        let mut d: u64 = 0;
+        let mut o: u64 = 0;
+        if *thousands != " " {
             t = thousands.parse::<u64>().unwrap();
         }
-        if &hundreds != " " {
+        if *hundreds != " " {
             h = hundreds.parse::<u64>().unwrap();
         }
-        if &tens != " " {
+        if *tens != " " {
             d = tens.parse::<u64>().unwrap();
         }
-        if &ones != " " {
+        if *ones != " " {
             o = ones.parse::<u64>().unwrap();
         }
-        if !(thousands == " " && hundreds == " " && tens == " " && ones == " ") {
-            //y.push(1000*t + 100*h + 10*d + o);
-            op_num += 1;
-        } else {
-            //numbers_pt2[idx].push(y);
-            idx += 1;
-            op_num = 0;
-        }
 
-        if x[0].len() == 0 {
-            break;
+        if !( /* *thousands == " ".to_string() && */ *hundreds == " ".to_string() && *tens == " ".to_string() && *ones == " ".to_string()) {
+            new_nbrs.push(1000 * t + 100 * h + 10 * d + o);
+        } else {
+            numbers_pt2.push(new_nbrs.clone());
+            new_nbrs.clear();
         }
     }
 
     dbg!(&numbers_pt2);
 
-    let mut answers_pt2:Vec<u64> = Vec::new();
+    let mut answers_pt2: Vec<u64> = Vec::new();
 
     for (idx, op) in operations.iter().enumerate() {
-        let mut operands:Vec<u64> = vec![];
-        for i in 0..numbers.len() {
-            operands.push(numbers[i][idx]);
+        let mut operands: Vec<u64> = vec![];
+        for i in 0..num_operands {
+            operands.push(numbers_pt2[idx][i]);
         }
 
         match *op {
@@ -175,11 +199,10 @@ pub fn run() {
         }
     }
 
-
-    let mut sum_pt2:u64 = 0;
+    let mut sum_pt2: u64 = 0;
     for answer in answers_pt2 {
-        if let Some(total) = sum.checked_add(answer) {
-            sum = total;
+        if let Some(total) = sum_pt2.checked_add(answer) {
+            sum_pt2 = total;
         } else {
             println!("Overflow occurred while adding up the answers for part 2.");
         }
