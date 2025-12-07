@@ -12,8 +12,8 @@ pub fn run() {
     println!("AoC 2025 Day 6");
 
     // Read the puzzle data file contents into a string
-    let filename = "./inputs/day06-test.txt";
-    // let filename = "./inputs/day06.txt";
+    // let filename = "./inputs/day06-test.txt";
+    let filename = "./inputs/day06.txt";
 
     // Read the puzzle data file contents into a string
     let input = std::fs::read_to_string(filename).expect("Failed to read input file for Day 6");
@@ -105,7 +105,7 @@ pub fn run() {
     for (row, line) in input_vec.iter().enumerate() {
         if !(line.contains("+") && line.contains("*")) {
             let digits: Vec<char> = line.chars().collect();
-            println!("{:?}", digits);
+            // println!("{:?}", digits);
             x.push(digits);
         }
     }
@@ -114,77 +114,41 @@ pub fn run() {
     let mut new_nbrs: Vec<u64> = Vec::new();
     for i in 0..x[1].len() {
 
-
-        // canonicalize each line, that is, push digits to the left and blanks to the right
-        // let mut canonical = x[i].into_iter().map(|x|  x.to_string()).collect::<Vec<String>>();
-        // let num_spaces = canonical.into_iter().rev().take_while(|x| x !=" ").count();  //collect::<Vec<char>>().len();
-        // remove spaces and canonicalize by pushing digits to the far side (right and higher index value)
         let mut ds:Vec<String> = vec![];
 
-        ds.push(" ".to_string()); // x[0].pop().unwrap().to_string();
         ds.push(x[0].pop().unwrap().to_string());
         ds.push(x[1].pop().unwrap().to_string());
         ds.push(x[2].pop().unwrap().to_string());
+        ds.push(x[3].pop().unwrap().to_string());
 
-        let mut canonical: Vec<String> = Vec::new();
+        let n = ds.join("");
+        let trimmed = n.trim();
 
-        for d in 0..ds.iter().len() {
-            if ds[d] != " " {
-                canonical.push(ds[d].clone());
-            }
-        }
-
-        if canonical.iter().len() < num_operands {
-            let padding = num_operands - canonical.len();
-            for i in 0..=padding {
-                canonical.push(" ".to_string());
-            }
-        }
-
-        dbg!(&canonical);
-
-        // let thousands = x[0].pop().unwrap().to_string();
-        // let hundreds = x[1].pop().unwrap().to_string();
-        // let tens = x[2].pop().unwrap().to_string();
-        // let ones = x[3].pop().unwrap().to_string();
-
-        let thousands = &"0".to_string(); // &canonical[3];
-        let hundreds = &canonical[0];
-        let tens = &canonical[1];
-        let ones = &canonical[2];
-
-        let mut t: u64 = 0;
-        let mut h: u64 = 0;
-        let mut d: u64 = 0;
-        let mut o: u64 = 0;
-        if *thousands != " " {
-            t = thousands.parse::<u64>().unwrap();
-        }
-        if *hundreds != " " {
-            h = hundreds.parse::<u64>().unwrap();
-        }
-        if *tens != " " {
-            d = tens.parse::<u64>().unwrap();
-        }
-        if *ones != " " {
-            o = ones.parse::<u64>().unwrap();
-        }
-
-        if !( /* *thousands == " ".to_string() && */ *hundreds == " ".to_string() && *tens == " ".to_string() && *ones == " ".to_string()) {
-            new_nbrs.push(1000 * t + 100 * h + 10 * d + o);
+        // if at least 1 digit is not empty
+        if !trimmed.to_string().is_empty()  {
+            let parsed: Result<u64, _> = trimmed.parse();
+            let num =  match parsed {
+                Ok(num) => num,
+                Err(_) => {eprintln!("Invalid input: '{}'", input); 0 as u64},
+            };
+            new_nbrs.push(num);
         } else {
             numbers_pt2.push(new_nbrs.clone());
             new_nbrs.clear();
         }
-    }
 
-    dbg!(&numbers_pt2);
+        // if we are at very last column of data...push last numbers onto vec
+        if x[0].is_empty() {
+            numbers_pt2.push(new_nbrs.clone());
+        }
+    }
 
     let mut answers_pt2: Vec<u64> = Vec::new();
 
-    for (idx, op) in operations.iter().enumerate() {
+    for (idx, op) in operations.iter().rev().enumerate() {
         let mut operands: Vec<u64> = vec![];
-        for i in 0..num_operands {
+        for i in 0..numbers_pt2[idx].len() {
+            // println!("{}, {}", idx, i);
             operands.push(numbers_pt2[idx][i]);
         }
 
@@ -199,6 +163,7 @@ pub fn run() {
         }
     }
 
+    // Add number up and watch out for possible overflow condition while doing so
     let mut sum_pt2: u64 = 0;
     for answer in answers_pt2 {
         if let Some(total) = sum_pt2.checked_add(answer) {
