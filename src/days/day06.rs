@@ -12,8 +12,8 @@ pub fn run() {
     println!("AoC 2025 Day 6");
 
     // Read the puzzle data file contents into a string
-    // let filename = "./inputs/day06-test.txt";
-    let filename = "./inputs/day06.txt";
+    let filename = "./inputs/day06-test.txt";
+    // let filename = "./inputs/day06.txt";
 
     // Read the puzzle data file contents into a string
     let input = std::fs::read_to_string(filename).expect("Failed to read input file for Day 6");
@@ -23,7 +23,7 @@ pub fn run() {
     let input_vec = Vec::from(
         input
             .lines()
-            .map(|line| line.trim())
+            .map(|line| line.trim_end_matches('\n').trim_end_matches('\r'))
             .filter(|line| !line.is_empty())
             .collect::<Vec<&str>>(),
     );
@@ -101,8 +101,91 @@ pub fn run() {
     //////////
     // Part 2
     //////////
-    let answer_p2 = 0;
-    println!("Part 2 answer {}", answer_p2);
+    let mut x: Vec<Vec<char>> = Vec::new();
+    for (row, line) in input_vec.iter().enumerate() {
+        if !(line.contains("+") && line.contains("*")) {
+            let digits : Vec<char> = line.chars().collect();
+            println!("{:?}", digits);
+            x.push(digits);
+        }
+    }
+
+    let mut numbers_pt2: Vec<Vec<u64>> = vec![vec![0; 3]];
+    let mut idx = 0;
+    let mut op_num = 0;
+    loop {
+        // let thousands = x[0].pop().unwrap().to_string();
+        // let hundreds = x[1].pop().unwrap().to_string();
+        // let tens = x[2].pop().unwrap().to_string();
+        // let ones = x[3].pop().unwrap().to_string();
+
+        let thousands = " ".to_string(); // x[0].pop().unwrap().to_string();
+        let hundreds = x[0].pop().unwrap().to_string();
+        let tens = x[1].pop().unwrap().to_string();
+        let ones = x[2].pop().unwrap().to_string();
+
+        let mut t:u64 = 0;
+        let mut h:u64 = 0;
+        let mut d:u64 = 0;
+        let mut o:u64 = 0;
+        if &thousands != " " {
+            t = thousands.parse::<u64>().unwrap();
+        }
+        if &hundreds != " " {
+            h = hundreds.parse::<u64>().unwrap();
+        }
+        if &tens != " " {
+            d = tens.parse::<u64>().unwrap();
+        }
+        if &ones != " " {
+            o = ones.parse::<u64>().unwrap();
+        }
+        if !(thousands == " " && hundreds == " " && tens == " " && ones == " ") {
+            //y.push(1000*t + 100*h + 10*d + o);
+            op_num += 1;
+        } else {
+            //numbers_pt2[idx].push(y);
+            idx += 1;
+            op_num = 0;
+        }
+
+        if x[0].len() == 0 {
+            break;
+        }
+    }
+
+    dbg!(&numbers_pt2);
+
+    let mut answers_pt2:Vec<u64> = Vec::new();
+
+    for (idx, op) in operations.iter().enumerate() {
+        let mut operands:Vec<u64> = vec![];
+        for i in 0..numbers.len() {
+            operands.push(numbers[i][idx]);
+        }
+
+        match *op {
+            "+" => {
+                answers_pt2.push(operands.iter().sum::<u64>());
+            }
+            "*" => {
+                answers_pt2.push(operands.iter().product::<u64>());
+            }
+            _ => eprintln!("Unknown operation {}", op),
+        }
+    }
+
+
+    let mut sum_pt2:u64 = 0;
+    for answer in answers_pt2 {
+        if let Some(total) = sum.checked_add(answer) {
+            sum = total;
+        } else {
+            println!("Overflow occurred while adding up the answers for part 2.");
+        }
+    }
+
+    println!("Part 2 answer {}", sum_pt2);
     println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed() - lap1);
 
     println!("\nTotal elapsed runtime: {:.2?}", stop_watch.elapsed());
