@@ -53,8 +53,8 @@ pub fn run() {
     println!("AoC 2025 Day 7");
 
     // Read the puzzle data file contents into a string
-    let filename = "./inputs/day07-test.txt";
-    // let filename = "./inputs/day07.txt";
+    //let filename = "./inputs/day07-test.txt";
+    let filename = "./inputs/day07.txt";
 
     // Read the puzzle data file contents into a string
     let input = std::fs::read_to_string(filename)
@@ -159,7 +159,7 @@ pub fn run() {
                                 if manifold[q as usize][right as usize].s != "^".to_string() {
                                     manifold[q as usize][right as usize].s = '|'.to_string();
                                     //manifold[q as usize][right as usize].cnt += 1;
-                                    println!("Updated {:?}", manifold[q as usize][right as usize]);
+                                    //println!("Updated {:?}", manifold[q as usize][right as usize]);
                                 }
 
                             }
@@ -167,7 +167,7 @@ pub fn run() {
                                 if manifold[q as usize][left as usize].s != "^".to_string() {
                                     manifold[q as usize][left as usize].s = '|'.to_string();
                                     //manifold[q as usize][right as usize].cnt += 1;
-                                    println!("Updated {:?}", manifold[q as usize][left as usize]);
+                                    //println!("Updated {:?}", manifold[q as usize][left as usize]);
                                 }
 
                             }
@@ -179,10 +179,10 @@ pub fn run() {
     }
 
     // Debug: Print out the grid to validate visually that it is correct
-    println!("after: ");
-    for row in &manifold {
-        println!("{}", row.iter().map(|floor_position| floor_position.to_string()).collect::<Vec<String>>().join(" "));
-    }
+    // println!("after: ");
+    // for row in &manifold {
+    //     println!("{}", row.iter().map(|floor_position| floor_position.to_string()).collect::<Vec<String>>().join(" "));
+    // }
 
     let mut splits_sum :u64 = 0;
     for row in &manifold {
