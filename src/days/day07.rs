@@ -149,21 +149,27 @@ pub fn run() {
                             manifold[q as usize][r as usize].s = '|'.to_string();
                         } else {
                             // has to be a splitter
+                            // beam split, update count
+                            manifold[row][col].cnt += 1;
+
+                            // update right and left
                             let right = r + 1;
                             let left = r - 1;
                             if right < cols as i32 {
-                                if manifold[q as usize][right as usize].s != "|".to_string() {
+                                if manifold[q as usize][right as usize].s != "^".to_string() {
                                     manifold[q as usize][right as usize].s = '|'.to_string();
-                                    manifold[q as usize][right as usize].cnt += 1;
+                                    //manifold[q as usize][right as usize].cnt += 1;
+                                    println!("Updated {:?}", manifold[q as usize][right as usize]);
                                 }
-                                println!("Updated {:?}", manifold[q as usize][right as usize]);
+
                             }
                             if left >= 0i32 {
-                                if manifold[q as usize][left as usize].s != "|".to_string() {
+                                if manifold[q as usize][left as usize].s != "^".to_string() {
                                     manifold[q as usize][left as usize].s = '|'.to_string();
-                                    manifold[q as usize][right as usize].cnt += 1;
+                                    //manifold[q as usize][right as usize].cnt += 1;
+                                    println!("Updated {:?}", manifold[q as usize][left as usize]);
                                 }
-                                println!("Updated {:?}", manifold[q as usize][left as usize]);
+
                             }
                         }
                     }
