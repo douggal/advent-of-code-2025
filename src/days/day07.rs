@@ -206,6 +206,8 @@ pub fn run() {
     //////////
     // Part 2
     //////////
+    // DNF
+
     let answer_p2 = 0;
     println!("Part 2 answer {}", answer_p2);
     println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed() - lap1);
