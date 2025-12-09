@@ -106,6 +106,15 @@ impl Graph {
         println!("A Graph, name = {}, with {} Vertices and {} Edges.  List of Vertices:", self.name, self.nbr_vertices, self.nbr_edges);
         for i in 0..self.vertices.len() {
             println!("{} - {}", i, self.vertices[i].coord.to_string());
+
+            let output = self.vertices[i].connected_to
+                .iter()
+                .map(|n| n.to_string())
+                .collect::<Vec<String>>()
+                .join(",");
+
+            println!("...Connected to: {}", output);
+
         }
     }
 }
@@ -154,26 +163,26 @@ pub fn run() {
     //////////
 
     // model the playground a graph of vertices
-    let mut playground = Graph::build_graph(String::from("Playground"), input_vec);
+    let mut graph = Graph::build_graph(String::from("Playground"), input_vec);
 
     // compute distances of each vertex to all the others
-    for v_id in 0..playground.nbr_vertices {
+    for v_id in 0..graph.nbr_vertices {
         // println!("{:?}", v);
-        for to_id in 0..playground.nbr_vertices {
-            let p = &playground.vertices[v_id as usize].coord;
-            let q = &playground.vertices[to_id as usize].coord;
+        for to_id in 0..graph.nbr_vertices {
+            let p = &graph.vertices[v_id as usize].coord;
+            let q = &graph.vertices[to_id as usize].coord;
             let radicand = (p.x as f64 - q.x as f64).powi(2) + (p.y as f64 - q.y as f64).powi(2) + (p.z as f64 - q.z as f64).powi(2);
             let distance = radicand.sqrt();
-            playground.vertices[v_id as usize].distances.push(distance);
+            graph.vertices[v_id as usize].distances.push(distance);
         }
     }
 
     // print graph if not too big
-    if playground.nbr_vertices < 50 {
-        playground.display();
+    if graph.nbr_vertices < 50 {
+        graph.display();
     }
     else {
-        println!("My graph {} has {} vertices and {} edges", playground.name, playground.nbr_vertices, playground.nbr_edges);
+        println!("My graph {} has {} vertices and {} edges", graph.name, graph.nbr_vertices, graph.nbr_edges);
         println!("Graph to big to display");
     }
 
@@ -182,14 +191,14 @@ pub fn run() {
     // find the two vertices with least distance between them.
     let mut min_dist_ids: Vec<u64> = Vec::new();
     let mut min_dists: Vec<f64> = Vec::new();
-    for v_id in 0..playground.nbr_vertices {
+    for v_id in 0..graph.nbr_vertices {
 
         let mut closest = 0u64;
         let mut closest_dist = f64::INFINITY;
-        for to_id in 0..playground.nbr_vertices {
+        for to_id in 0..graph.nbr_vertices {
             if v_id != to_id {
-                if playground.vertices[v_id as usize].distances[to_id as usize] < closest_dist {
-                    closest_dist = playground.vertices[v_id as usize].distances[to_id as usize];
+                if graph.vertices[v_id as usize].distances[to_id as usize] < closest_dist {
+                    closest_dist = graph.vertices[v_id as usize].distances[to_id as usize];
                     closest = to_id;
                 }
             }
@@ -205,21 +214,20 @@ pub fn run() {
     let mut min: Vec<_> = min_dist_ids.iter().zip(min_dists).collect();
     min.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
     for item in min.iter().take(2) {
-        println!("{} - {} {}", item.0, item.1.to_string(), playground.vertices[*item.0 as usize].coord.to_string());
+        println!("{} - {} {}", item.0, item.1.to_string(), graph.vertices[*item.0 as usize].coord.to_string());
+    }
+    graph.vertices[*min[0].0 as usize].connected_to.push(*min[1].0);
+    graph.vertices[*min[1].0 as usize].connected_to.push(*min[0].0);
+
+    // print graph if not too big
+    if graph.nbr_vertices < 50 {
+        graph.display();
+    }
+    else {
+        println!("My graph {} has {} vertices and {} edges", graph.name, graph.nbr_vertices, graph.nbr_edges);
+        println!("Graph to big to display");
     }
 
-
-    // let mut closest = 0;
-    // let mut closest_dist = f64::INFINITY;
-    // for (id, dist) in min_dists.iter().enumerate() {
-    //     if dist < &closest_dist {
-    //         closest_dist = *dist;
-    //         closest = id;
-    //     }
-    // }
-    //
-    // println!("Closest id = {} {}", closest, playground.vertices[closest as usize].coord.to_string());
-    // println!("Closest = {}", closest_dist);
 
     let answer_p1 = 0;
     println!("Part 1 answer {}", answer_p1);
