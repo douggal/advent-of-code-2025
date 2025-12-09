@@ -177,6 +177,49 @@ pub fn run() {
         println!("Graph to big to display");
     }
 
+    // find two vertices with the smallest distance between them
+    // for each vertex find the closest node
+    // find the two vertices with least distance between them.
+    let mut min_dist_ids: Vec<u64> = Vec::new();
+    let mut min_dists: Vec<f64> = Vec::new();
+    for v_id in 0..playground.nbr_vertices {
+
+        let mut closest = 0u64;
+        let mut closest_dist = f64::INFINITY;
+        for to_id in 0..playground.nbr_vertices {
+            if v_id != to_id {
+                if playground.vertices[v_id as usize].distances[to_id as usize] < closest_dist {
+                    closest_dist = playground.vertices[v_id as usize].distances[to_id as usize];
+                    closest = to_id;
+                }
+            }
+        }
+        min_dist_ids.push(closest);
+        min_dists.push(closest_dist);
+    }
+
+    // Debug: display output
+    // for (id, x) in min_dist_ids.iter().zip(min_dists).enumerate() {
+    //     println!("{}: {},{}", id, x.0, x.1);
+    // }
+    let mut min: Vec<_> = min_dist_ids.iter().zip(min_dists).collect();
+    min.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+    for item in min.iter().take(2) {
+        println!("{} - {} {}", item.0, item.1.to_string(), playground.vertices[*item.0 as usize].coord.to_string());
+    }
+
+
+    // let mut closest = 0;
+    // let mut closest_dist = f64::INFINITY;
+    // for (id, dist) in min_dists.iter().enumerate() {
+    //     if dist < &closest_dist {
+    //         closest_dist = *dist;
+    //         closest = id;
+    //     }
+    // }
+    //
+    // println!("Closest id = {} {}", closest, playground.vertices[closest as usize].coord.to_string());
+    // println!("Closest = {}", closest_dist);
 
     let answer_p1 = 0;
     println!("Part 1 answer {}", answer_p1);
