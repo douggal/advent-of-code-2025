@@ -1,5 +1,4 @@
 use std::time::Instant;
-
 ////////////////////////////////////////////////////////////////
 // Advent of Code 2025 Day 8
 // Link: <a href="...">https://adventofcode.com/2025/day/8</a>
@@ -13,7 +12,7 @@ use std::time::Instant;
 //   - list of distances to every other vertex
 //   - list of connected vertices, initially empty
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Coordinate {
     x:u64,
     y:u64,
@@ -21,15 +20,17 @@ pub struct Coordinate {
 }
 
 impl Coordinate {
-    pub fn new(x:u64, y:u64, z:u64) -> Coordinate {
-        Coordinate{x,y,z}
+    // Associated function to create a new Coordinate
+    fn new(x: u64, y: u64, z: u64) -> Self {
+        Self { x, y, z }
     }
+
     pub fn to_string(&self) -> String {
         format!("({},{},{})", self.x,self.y,self.z)
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone,Debug,PartialEq, PartialOrd)]
 pub struct Vertex {
     id: u64,
     coord: Coordinate,
@@ -45,6 +46,7 @@ pub struct Graph {
     pub vertices: Vec<Vertex>,  // vector of vectors
 }
 
+#[allow(unused)]
 impl Graph {
     // Constructor-like function
     pub fn new(name: String, nbr_vertices: u64) -> Self {
@@ -73,12 +75,14 @@ impl Graph {
                 .map(|s| s.trim().parse::<u64>().unwrap())
                 .collect();
 
+            let mut distances: Vec<f64> = Vec::new();
+            let mut connected_to: Vec<u64> = Vec::new();
             vertices.push(Vertex {
                 id: id as u64,
-                coord: Coordinate { x: parts[0], y: parts[1], z: parts[2] },
+                coord: Coordinate::new(parts[0], parts[1], parts[2] ),
                 name: id.to_string(),
-                distances: vec![],
-                connected_to: vec![],
+                distances: distances,
+                connected_to: connected_to,
             })
         }
         // sort the vertices for easy reading during debugging
@@ -149,7 +153,20 @@ pub fn run() {
     // Part 1
     //////////
 
-    let playground = Graph::build_graph(String::from("Playground"), input_vec);
+    // model the playground a graph of vertices
+    let mut playground = Graph::build_graph(String::from("Playground"), input_vec);
+
+    // compute distances of each vertex to all the others
+    for v_id in 0..playground.nbr_vertices {
+        // println!("{:?}", v);
+        for to_id in 0..playground.nbr_vertices {
+            let p = &playground.vertices[v_id as usize].coord;
+            let q = &playground.vertices[to_id as usize].coord;
+            let radicand = (p.x as f64 - q.x as f64).powi(2) + (p.y as f64 - q.y as f64).powi(2) + (p.z as f64 - q.z as f64).powi(2);
+            let distance = radicand.sqrt();
+            playground.vertices[v_id as usize].distances.push(distance);
+        }
+    }
 
     // print graph if not too big
     if playground.nbr_vertices < 50 {
@@ -159,8 +176,6 @@ pub fn run() {
         println!("My graph {} has {} vertices and {} edges", playground.name, playground.nbr_vertices, playground.nbr_edges);
         println!("Graph to big to display");
     }
-
-
 
 
     let answer_p1 = 0;
