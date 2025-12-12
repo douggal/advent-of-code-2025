@@ -211,13 +211,22 @@ pub fn run() {
     // for (id, x) in min_dist_ids.iter().zip(min_dists).enumerate() {
     //     println!("{}: {},{}", id, x.0, x.1);
     // }
-    let mut min: Vec<_> = min_dist_ids.iter().zip(min_dists).collect();
-    min.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
-    for item in min.iter().take(2) {
-        println!("{} - {} {}", item.0, item.1.to_string(), graph.vertices[*item.0 as usize].coord.to_string());
-    }
-    graph.vertices[*min[0].0 as usize].connected_to.push(*min[1].0);
-    graph.vertices[*min[1].0 as usize].connected_to.push(*min[0].0);
+
+    let mut paired: Vec<(u64, f64)> = min_dist_ids.into_iter()
+        .zip(min_dists)
+        .collect();
+
+    paired.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+    let two_smallest = (&paired[0], &paired[1]);
+
+
+    graph.vertices[two_smallest.0.0 as usize].connected_to.push(two_smallest.1.0);
+    graph.vertices[two_smallest.1.0 as usize].connected_to.push(two_smallest.0.0);
+    graph.nbr_edges += 1;
+    
+
+
+
 
     // print graph if not too big
     if graph.nbr_vertices < 50 {

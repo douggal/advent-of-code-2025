@@ -1,0 +1,99 @@
+{
+    "Print Debug": {
+        "prefix": "dbg",
+        "body": [
+            "dbg!($1);"
+        ],
+        "description": "Debug print macro"
+    },
+    "Println": {
+        "prefix": "pln",
+        "body": [
+            "println!($1);"
+        ],
+        "description": "Print with newline"
+    },
+    "Function": {
+        "prefix": "fn",
+        "body": [
+            "fn ${1:name}(${2:args}) {",
+            "    $3",
+            "}"
+        ],
+        "description": "New function"
+    },
+    "For Loop": {
+        "prefix": "for",
+        "body": [
+            "for ${1:item} in ${2:collection} {",
+            "    $3",
+            "}"
+        ],
+        "description": "For loop"
+    },
+    "Match Statement": {
+        "prefix": "match",
+        "body": [
+            "match ${1:value} {",
+            "    ${2:pattern} => $3,",
+            "    _ => $4,",
+            "}"
+        ],
+        "description": "Match expression"
+    },
+    "If Let": {
+        "prefix": "iflet",
+        "body": [
+            "if let ${1:Some(x)} = ${2:value} {",
+            "    $3",
+            "}"
+        ],
+        "description": "If let pattern"
+    },
+    "Parse String": {
+        "prefix": "parse",
+        "body": [
+            "${1:value}.parse::<${2:i32}>().unwrap()"
+        ],
+        "description": "Parse string to type"
+    },
+    "Unwrap or Default": {
+        "prefix": "unwrap_or",
+        "body": [
+            "${1:value}.unwrap_or(${2:default})"
+        ],
+        "description": "Unwrap or provide default"
+    },
+    "Vec Collect": {
+        "prefix": "collect",
+        "body": [
+            "${1:iterator}.collect::<Vec<_>>()"
+        ],
+        "description": "Collect iterator into Vec"
+    },
+    "Read File": {
+        "prefix": "readfile",
+        "body": [
+            "let content = std::fs::read_to_string(\"${1:path}\").unwrap();"
+        ],
+        "description": "Read file to string"
+    },
+    "Main Function": {
+        "prefix": "main",
+        "body": [
+            "fn main() {",
+            "    $1",
+            "}"
+        ],
+        "description": "Main function"
+    },
+    "Struct": {
+        "prefix": "struct",
+        "body": [
+            "struct ${1:Name} {",
+            "    ${2:field}: ${3:Type},",
+            "}"
+        ],
+        "description": "Struct definition"
+    }
+}
