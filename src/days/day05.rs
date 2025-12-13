@@ -13,7 +13,7 @@ pub fn run() {
     println!("AoC 2025 Day 5");
 
     // Read the puzzle data file contents into a string
-    //let filename = "./inputs/day05-test.txt";
+    // let filename = "./inputs/day05-test.txt";
     let filename = "./inputs/day05.txt";
 
     // Read the puzzle data file contents into a string
@@ -133,10 +133,10 @@ pub fn run() {
             if test.0 < stack_top.0 && test.1 > stack_top.1 {
                 // span new tuple encompasses the old one
                 // check if span more than one range, then pop until
-                if !ordered_stack.is_empty()  {
+                if !ordered_stack.is_empty() {
                     loop {
-                        ordered_stack.pop();
-                        if ordered_stack.is_empty() || test.1 < ordered_stack.last().unwrap().1  {
+                        ordered_stack.pop().clone().unwrap();
+                        if ordered_stack.is_empty() || test.1 < ordered_stack.last().unwrap().1 {
                             break;
                         }
                     }
@@ -146,14 +146,13 @@ pub fn run() {
                 // outside and to the left, push new item
                 ordered_stack.push(stack_top);
                 ordered_stack.push(test);
-            }
-            else if test.0 < stack_top.0 && test.0 <= stack_top.1 && test.1 <= stack_top.1  {
+            } else if test.0 < stack_top.0 && test.0 <= stack_top.1 && test.1 <= stack_top.1 {
                 // overlap left
                 ordered_stack.push((test.0, stack_top.1));
             } else if test.0 > stack_top.0 && test.0 <= stack_top.1 && test.1 >= stack_top.1 {
                 // overlap right
-                ordered_stack.push((stack_top.0, test.1) );
-            } else if test.0 >= stack_top.0 && test.1 <= stack_top.1  {
+                ordered_stack.push((stack_top.0, test.1));
+            } else if test.0 >= stack_top.0 && test.1 <= stack_top.1 {
                 //between
                 ordered_stack.push(stack_top);  // push same tuple back on stack
             } else /* if test.0 > stack_top.1 && test.1 >= stack_top.1 */ {
@@ -172,18 +171,15 @@ pub fn run() {
 
     let mut sum:u64 = 0;
     for (s, e) in ordered_stack.iter() {
-
         if let Some(diff) = e.checked_sub(*s) {
             if let Some(new_sum) = sum.checked_add(diff +1) {
                 sum = new_sum;
-                // println!("Updated sum: {}", sum);
             } else {
                 println!("Overflow occurred while adding to sum.");
             }
         } else {
             println!("Underflow occurred during subtraction.");
         }
-
     }
     println!("Part 2 answer {}", sum);
     println!("Elapsed time part 2: {:.2?}", stop_watch.elapsed() - lap1);
