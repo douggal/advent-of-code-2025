@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap};
 use std::time::Instant;
 
 ////////////////////////////////////////////////////////////////
@@ -133,15 +133,15 @@ pub fn run() {
             if test.0 < stack_top.0 && test.1 > stack_top.1 {
                 // span new tuple encompasses the old one
                 ordered_stack.push(test);
-            } else if test.0 < stack_top.0 && test.1 <= stack_top.0 {
+            } else if test.0 < stack_top.0 && test.1 < stack_top.0 {
                 // outside and to the left, push new item
-                ordered_stack.push(test);
                 ordered_stack.push(stack_top);
+                ordered_stack.push(test);
             }
-            else if test.0 < stack_top.0 && test.1 <= stack_top.1 && test.1 <= stack_top.1  {
+            else if test.0 < stack_top.0 && test.0 <= stack_top.1 && test.1 <= stack_top.1  {
                 // overlap left
                 ordered_stack.push((test.0, stack_top.1));
-            } else if test.0 > stack_top.0 && test.0 <= stack_top.1 && test.1 > stack_top.1 {
+            } else if test.0 > stack_top.0 && test.0 <= stack_top.1 && test.1 >= stack_top.1 {
                 // overlap right
                 ordered_stack.push((stack_top.0, test.1) );
             } else if test.0 >= stack_top.0 && test.1 <= stack_top.1  {
@@ -149,8 +149,8 @@ pub fn run() {
                 ordered_stack.push(stack_top);  // push same tuple back on stack
             } else /* if test.0 > stack_top.1 && test.1 >= stack_top.1 */ {
                 // outside and to the right (bigger than any range)
-                ordered_stack.push(stack_top);
                 ordered_stack.push(test);
+                ordered_stack.push(stack_top);
             }
         }
 
