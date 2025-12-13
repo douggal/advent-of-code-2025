@@ -13,8 +13,8 @@ pub fn run() {
     println!("AoC 2025 Day 5");
 
     // Read the puzzle data file contents into a string
-    let filename = "./inputs/day05-test.txt";
-    // let filename = "./inputs/day05.txt";
+    //let filename = "./inputs/day05-test.txt";
+    let filename = "./inputs/day05.txt";
 
     // Read the puzzle data file contents into a string
     let input = std::fs::read_to_string(filename).expect("Failed to read input file for Day 5");
@@ -132,6 +132,15 @@ pub fn run() {
             let stack_top = ordered_stack.pop().clone().unwrap();
             if test.0 < stack_top.0 && test.1 > stack_top.1 {
                 // span new tuple encompasses the old one
+                // check if span more than one range, then pop until
+                if !ordered_stack.is_empty()  {
+                    loop {
+                        ordered_stack.pop();
+                        if ordered_stack.is_empty() || test.1 < ordered_stack.last().unwrap().1  {
+                            break;
+                        }
+                    }
+                }
                 ordered_stack.push(test);
             } else if test.0 < stack_top.0 && test.1 < stack_top.0 {
                 // outside and to the left, push new item
